@@ -1,28 +1,81 @@
+import { act } from "react"
 import { Activity } from "../types"
 
-export type ActivityActions = 
-{ type: 'save-activity', payload: { newActivity : Activity  } }
+export type ActivityActions =
+    { type: 'save-activity', payload: { newActivity: Activity } } |
+    { type: 'set-activeId', payload: { id: Activity['id'] } }  |
+    { type: 'delete-activity', payload: { id: Activity['id'] } } |
+    { type: 'reset-activity'}
 
-type ActivityState = {
-    activities : Activity[]
+
+export type ActivityState = {
+    activities: Activity[],
+    activeId: Activity['id']
 }
 
-export const initialState : ActivityState= {
-    activities: []
+const localStorageActivities = () : Activity[] => {
+    const activities= localStorage.getItem('activities')
+    return activities ? JSON.parse(activities) : 
+    []
+}
 
+
+export const initialState: ActivityState = {
+    activities: localStorageActivities(),
+    activeId: ''
 }
 
 export const activityReducer = (
-        state: ActivityState = initialState, 
-        action: ActivityActions
-    ) => {
+    state: ActivityState = initialState,
+    action: ActivityActions
+): ActivityState => {
 
-        if(action.type === 'save-activity') {
-            console.log('desde el type de save-activity')
+    switch (action.type) {
+        case 'save-activity': {
+            let updatedActivities: Activity[];
+
+            if (state.activeId) {
+                // Editar actividad existente
+                updatedActivities = state.activities.map(act =>
+                    act.id === state.activeId ? action.payload.newActivity : act
+                );
+            } else {
+                // Agregar nueva actividad
+                updatedActivities = [...state.activities, action.payload.newActivity];
+            }
+
+            return {
+                ...state,
+                activities: updatedActivities,
+                activeId: ''
+            };
         }
 
-        return {
+        case 'set-activeId':
+            return {
+                ...state,
+                activeId: action.payload.id
+            };
+
+        case 'delete-activity': {
+            const updatedActivities = state.activities.filter(
+                act => act.id !== action.payload.id
+            );
+            return {
             ...state,
-            activities: [...state.activities, action.payload.newActivity]
+             activities: updatedActivities
+            }
         }
-}
+
+        case 'reset-activity': 
+        return {
+            activities: [],
+            activeId: ''
+        }
+            
+        
+
+        default:
+            return state;
+    }
+};
