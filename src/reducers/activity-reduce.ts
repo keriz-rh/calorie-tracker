@@ -1,4 +1,3 @@
-import { act } from "react"
 import { Activity } from "../types"
 
 export type ActivityActions =
