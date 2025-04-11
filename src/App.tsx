@@ -17,11 +17,9 @@ function App() {
 
   return (
     <>
-
       <header className="bg-lime-600 text-white p-4">
         <div className="max-w-4xl mx-auto flex justify-between items-center">
-
-          <h1 className="text-2xl font-bold">
+          <h1 className="text-2xl font-bold uppercase">
             Contador de Calorias App</h1>
       
           <button
