@@ -1,7 +1,7 @@
 import { createContext, Dispatch, ReactNode, useMemo, useReducer } from "react"
 import { ActivityActions, activityReducer, ActivityState, initialState } from "../reducers/activity-reduce"
 import { categories } from "../data/categories"
-import { Activity, Category } from "../types"
+import { Activity} from "../types"
 
 type ActivityProviderProps = {
     children: ReactNode

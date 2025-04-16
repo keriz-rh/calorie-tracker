@@ -1,8 +1,7 @@
-import { useReducer, useEffect, useMemo } from "react"
-import Form from "./components/form"
-import { activityReducer, initialState } from "./reducers/activity-reduce"
+import { useEffect, useMemo } from "react"
 import ActivityList from "./components/ActivityList"
 import CalorieTracker from "./components/CalorieTracker"
+import Form from "./components/form"
 import { useActivity } from "./hooks/useActivity"
 
 
